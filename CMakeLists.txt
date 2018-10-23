@@ -85,30 +85,6 @@ if (COIN_DISABLE_WARNINGS)
   endif ()
 endif ()
 
-option(ENABLE_CBC_PARALLEL "Enables compilation of the SMP version of Cbc" ON)
-find_package(Threads)
-set(PTHREADS_W32_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/pthreads-w32)
-if (NOT ENABLE_CBC_PARALLEL)
-  # Do nothing.
-elseif (CMAKE_USE_PTHREADS_INIT)
-  set(CBC_THREAD 1)
-  set(CBC_PTHREADS_LIB ${CMAKE_THREAD_LIBS_INIT})
-elseif (WIN32 AND EXISTS ${PTHREADS_W32_DIR})
-  set(sources )
-  foreach (src attr.c barrier.c cancel.c cleanup.c condvar.c create.c dll.c
-               autostatic.c errno.c exit.c fork.c global.c misc.c mutex.c
-               nonportable.c private.c rwlock.c sched.c semaphore.c signal.c
-               spin.c sync.c tsd.c)
-    set(sources ${sources} ${PTHREADS_W32_DIR}/${src})
-  endforeach ()
-  include_directories(${PTHREADS_W32_DIR})
-  add_definitions(-DPTW32_STATIC_LIB=1)
-  add_library(pthreads ${sources})
-  set(CBC_THREAD 1)
-  set(CBC_PTHREADS_LIB pthreads)
-  set(COIN_INSTALL_TARGETS ${COIN_INSTALL_TARGETS} pthreads)
-endif ()
-
 # Parses an automake input processing conditional parts such as:
 #   if VAR
 #   ...
@@ -488,12 +464,6 @@ else ()
   endif ()
 endif ()
 
-set(CBC_DEFAULT_SOLVER_NAME Clp)
-string(TOLOWER ${CBC_DEFAULT_SOLVER_NAME} CBC_DEFAULT_SOLVER)
-set(OSICBC_DFLT_SOLVER_C Osi${CBC_DEFAULT_SOLVER_NAME}SolverInterface)
-set(OSICBC_DFLT_SOLVER_HPP ${OSICBC_DFLT_SOLVER_C}.hpp)
-string(TOUPPER ${CBC_DEFAULT_SOLVER} solver_uppercase)
-set(OSICBC_DFLT_SOLVER_${solver_uppercase} 1)
 set(COIN_HAS_COINDEPEND 1)
 set(COIN_HAS_OSITESTS 1)
 set(COIN_HAS_SAMPLE 1)
@@ -526,50 +496,10 @@ endif ()
 
 enable_testing()
 
-include_directories(Cbc/BuildTools/headers)
-
-add_coin_library(Cbc/CoinUtils ${COINUTILS_LIBS})
-add_coin_library(Cbc/Clp CoinUtils)
-add_coin_library(Cbc/Clp/src/OsiClp Osi Clp)
-add_coin_library(Cbc/Osi/src/Osi CoinUtils)
-add_coin_library(Cbc/Osi/src/OsiCommonTest
-  NAME OsiCommonTests TEST_PATH Osi/test Osi OsiClp)
-
-foreach (name AllDifferent Clique DuplicateRow FlowCover GMI Gomory
-              KnapsackCover LandP LiftAndProject MixedIntegerRounding
-              MixedIntegerRounding2 OddHole PreProcess Probing RedSplit
-              RedSplit2 ResidualCapacity SimpleRounding Twomir ZeroHalf)
-  add_coin_library(Cbc/Cgl/src/Cgl${name})
-  set(CGL_LIBS ${CGL_LIBS} Cgl${name})
-  set_target_properties(Cgl${name} PROPERTIES COMPILE_DEFINITIONS CGL_BUILD)
-endforeach ()
-add_coin_library(Cbc/Cgl ${CGL_LIBS} OsiClp Osi)
-
-add_coin_library(Cbc/Cbc Cgl OsiClp ${CBC_PTHREADS_LIB})
-add_coin_library(Cbc/Cbc/src/OsiCbc Osi Cbc)
-target_link_libraries(Cbc-osiUnitTest OsiCbc)
-target_link_libraries(Cbc-gamsTest CbcSolver)
-target_link_libraries(Cbc-CInterfaceTest CbcSolver)
-
-add_coin_library(Cbc/Cbc NAME CbcSolver NOTESTS Cbc Cgl ${ASL_LIBRARIES})
-set_target_properties(CbcSolver PROPERTIES COMPILE_DEFINITIONS CBC_BUILD)
-
-add_executable(cbc-executable Cbc/Cbc/src/CoinSolve.cpp)
-set_target_properties(cbc-executable
-  PROPERTIES OUTPUT_NAME cbc IMPORT_PREFIX imp)
-target_link_libraries(cbc-executable CbcSolver)
-add_test(Cbc-unitTest bin/cbc -dirSample Cbc/Data/Sample -unitTest)
-
 add_definitions(-DHAVE_CONFIG_H)
 
 # Define FORTRAN_INTEGER_TYPE for Ipopt.
 set(FORTRAN_INTEGER_TYPE_C int)
-
-configure(Cbc/CoinUtils src/config.h src/config_coinutils.h)
-configure(Cbc/Osi src/Osi/config.h src/Osi/config_osi.h)
-configure(Cbc/Clp src/config.h src/config_clp.h)
-configure(Cbc/Cgl src/config.h src/config_cgl.h)
-configure(Cbc/Cbc src/config.h src/config_cbc.h)
 
 function(add_ipopt_library name path)
   add_coin_library(Ipopt/Ipopt/src/${path} NAME ${name} ${ARGN})
@@ -735,93 +665,6 @@ function(add_coin_test name dir lib)
   add_test(NAME ${name} COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bin/${name}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${dir})
 endfunction()
-
-if (BUILD_IPOPT AND EXISTS ${COIN_SOURCE_DIR}/Bonmin)
-  add_coin_library(Bonmin/Bonmin/src/Algorithms/Branching NAME bonbranching)
-  add_coin_library(Bonmin/Bonmin/src/Algorithms/QuadCuts NAME bonquadcuts)
-  add_coin_library(Bonmin/Bonmin/src/Algorithms/OaGenerators NAME bonoagenerators)
-  add_coin_library(Bonmin/Bonmin/src/Algorithms NAME bonalgorithms)
-  add_coin_library(Bonmin/Bonmin/src/Interfaces/Ipopt NAME ipoptinterface)
-  add_coin_library(Bonmin/Bonmin/src/Interfaces NAME bonmininterfaces)
-  add_coin_library(Bonmin/Bonmin/src/CbcBonmin/Heuristics NAME bonheuristics)
-  if (COIN_HAS_ASL)
-    add_coin_library(Bonmin/Bonmin/src/Algorithms/Ampl NAME bonamplsetup)
-    add_coin_library(Bonmin/Bonmin/src/Interfaces/Ampl NAME bonamplinterface)
-    add_dependencies(bonamplinterface ${ASL_LIBRARIES})
-    set(BONMIN_DEPS bonamplsetup bonamplinterface ${ASL_LIBRARIES})
-
-    add_executable(bonmin-executable Bonmin/Bonmin/src/Apps/BonMin.cpp)
-    set_target_properties(bonmin-executable PROPERTIES
-      COMPILE_DEFINITIONS BONMIN_BUILD OUTPUT_NAME bonmin IMPORT_PREFIX imp)
-    target_link_libraries(bonmin-executable bonmin)
-  endif ()
-  add_coin_library(Bonmin/Bonmin/src/CbcBonmin NAME bonmin
-    bonalgorithms bonbranching bonquadcuts bonoagenerators
-    bonmininterfaces ipoptinterface ipopt bonheuristics CbcSolver ${BONMIN_DEPS})
-  target_include_directories(bonmin PUBLIC Bonmin/Bonmin/src/Interfaces/Ampl)
-
-  add_coin_test(Bonmin-unitTest Bonmin/Bonmin/test bonmin InterfaceTest.cpp)
-  add_coin_test(Bonmin-CppExample Bonmin/Bonmin/examples/CppExample
-    bonmin MyBonmin.cpp MyTMINLP.cpp MyTMINLP.hpp)
-
-  configure(Bonmin Bonmin/src/Interfaces/config.h Bonmin/src/Interfaces/config_bonmin.h)
-endif ()
-
-function(add_couenne_library name path)
-  add_coin_library(Couenne/Couenne/src/${path} NAME ${name})
-  set_target_properties(${name} PROPERTIES COMPILE_DEFINITIONS COUENNE_BUILD)
-endfunction()
-
-if (BUILD_IPOPT AND EXISTS ${COIN_SOURCE_DIR}/Couenne)
-  include_directories(
-    Couenne/Couenne/src Couenne/Couenne/src/main
-    Couenne/Couenne/src/expression/operators
-    Couenne/Couenne/src/expression/operators/bounds
-    Couenne/Couenne/src/expression/partial
-    Couenne/Couenne/src/problem/depGraph)
-  add_couenne_library(CouenneUtil util)
-  add_couenne_library(CouenneExpression expression)
-  add_couenne_library(CouenneStandardize standardize)
-  add_couenne_library(CouenneProblem problem)
-  add_couenne_library(CouenneBoundTightening bound_tightening)
-  add_couenne_library(CouenneTwoImplied bound_tightening/twoImpliedBT)
-  add_couenne_library(CouenneConvex convex)
-  add_couenne_library(CouenneBranch branch)
-  add_couenne_library(CouenneDisjunctive disjunctive)
-  add_couenne_library(CouenneInterfaces interfaces)
-  add_couenne_library(CouenneHeuristics heuristics)
-  add_couenne_library(CouenneCrossConv cut/crossconv)
-  add_couenne_library(CouenneSdpCuts cut/sdpcuts)
-
-  if (COIN_HAS_ASL)
-    set(COUENNEINTERFACE_FROM_ASL 1)
-    add_dependencies(CouenneProblem asl)
-  endif ()
-
-  set(DEPENDENCY_LINKING 1)
-  add_coin_library(Couenne/Couenne/src NAME Couenne
-    CouenneInterfaces CouenneHeuristics CouenneProblem CouenneStandardize
-    CouenneExpression CouenneBranch CouenneConvex CouenneBoundTightening
-    CouenneTwoImplied CouenneUtil CouenneDisjunctive CouenneCrossConv CouenneSdpCuts
-    bonmin)
-  if (NOT WIN32)
-    target_link_libraries(Couenne lapack)
-  endif ()
-
-  add_executable(couenne-executable Couenne/Couenne/src/main/BonCouenne.cpp)
-  set_target_properties(couenne-executable PROPERTIES
-    COMPILE_DEFINITIONS COUENNE_BUILD OUTPUT_NAME couenne IMPORT_PREFIX imp)
-  target_link_libraries(couenne-executable Couenne)
-
-  set(srcdir ${CMAKE_CURRENT_SOURCE_DIR}/Couenne/test)
-  configure_file(Couenne/Couenne/test/grandTest.sh.in Couenne/Couenne/test/grandTest.sh @ONLY)
-  add_test(NAME Couenne-grandTest
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/Couenne/test.cmake
-            $<TARGET_FILE:couenne-executable>
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Couenne)
-
-  configure(Couenne Couenne/src/config.h Couenne/src/config_couenne.h)
-endif ()
 
 # Fix paths to libstdc++ on OS X.
 if (APPLE)
