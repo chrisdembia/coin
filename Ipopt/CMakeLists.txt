@@ -45,13 +45,13 @@ set(F77_FUNC_ "${FortranCInterface_GLOBAL__MACRO}" CACHE INTERNAL "")
 
 # Convert the information about Fortran name mangling into the format
 # required by MUMPS.
-if (FortranCInterface_GLOBAL_CASE STREQUAL "UPPER")
-  add_definitions(-DUPPER)
-elseif (FortranCInterface_GLOBAL_SUFFIX STREQUAL "_")
-  add_definitions(-DAdd_)
-elseif (FortranCInterface_GLOBAL_SUFFIX STREQUAL "__")
-  add_definitions(-DAdd__)
-endif ()
+# TODO if (FortranCInterface_GLOBAL_CASE STREQUAL "UPPER")
+# TODO   add_definitions(-DUPPER)
+# TODO elseif (FortranCInterface_GLOBAL_SUFFIX STREQUAL "_")
+# TODO   add_definitions(-DAdd_)
+# TODO elseif (FortranCInterface_GLOBAL_SUFFIX STREQUAL "__")
+# TODO   add_definitions(-DAdd__)
+# TODO endif ()
 
 add_definitions(-DMUMPS_ARITH=MUMPS_ARITH_d)
 if (WIN32)
