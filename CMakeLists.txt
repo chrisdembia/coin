@@ -713,8 +713,8 @@ install(DIRECTORY
     "Ipopt/Ipopt/src/Common/"
     "Ipopt/Ipopt/src/contrib/CGPenalty/"
     "Ipopt/Ipopt/src/contrib/LinearSolverLoader/"
-    "Ipopt/Ipopt/src/contrib/Interfaces/"
-    "Ipopt/Ipopt/src/contrib/LinAlg/"
+    "Ipopt/Ipopt/src/Interfaces/"
+    "Ipopt/Ipopt/src/LinAlg/"
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 
