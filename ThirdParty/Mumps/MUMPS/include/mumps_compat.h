@@ -57,6 +57,10 @@
 # define MUMPS_WIN32 1
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+# define MUMPS_GNUC 1
+#endif
+
 #ifndef MUMPS_CALL
 # ifdef MUMPS_WIN32
 /* Modify/choose between next 2 lines depending

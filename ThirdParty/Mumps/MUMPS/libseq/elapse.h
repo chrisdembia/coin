@@ -59,7 +59,7 @@
 #endif
 #endif
 
-#if (defined(_WIN32) && ! defined(__MINGW32__)) || defined(UPPER)
+#if (! defined(__GNUC__) && ! defined(__clang__) ) || defined(UPPER)
 #define mumps_elapse MUMPS_ELAPSE
 #elif defined(Add__)
 #define mumps_elapse mumps_elapse__
