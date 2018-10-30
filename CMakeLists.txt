@@ -8,6 +8,8 @@ if (BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif ()
 
+include(GNUInstallDirs)
+
 set(MP_DIR ThirdParty/mp)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MP_DIR}/CMakeLists.txt)
   include(${CMAKE_CURRENT_SOURCE_DIR}/${MP_DIR}/support/cmake/init.cmake)
@@ -693,7 +695,30 @@ if (COIN_HAS_ASL)
   endforeach ()
 endif ()
 
-install(TARGETS ${COIN_INSTALL_TARGETS}
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-  ARCHIVE DESTINATION lib)
+install(TARGETS ipopt
+  EXPORT ipopt-targets
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
+get_filename_component(IPOPT_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}"
+    ABSOLUTE "${CMAKE_BINARY_DIR}")
+get_filename_component(IPOPT_INSTALL_INCLUDEDIR
+    "${CMAKE_INSTALL_INCLUDEDIR}/coin"
+    ABSOLUTE "${IPOPT_INSTALL_PREFIX}")
+target_include_directories(ipopt INTERFACE
+    $<BUILD_INTERFACE:${IPOPT_INSTALL_INCLUDEDIR}>)
+
+set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/coin")
+install(DIRECTORY
+    "Ipopt/Ipopt/src/Algorithm/"
+    "Ipopt/Ipopt/src/Common/"
+    "Ipopt/Ipopt/src/contrib/CGPenalty/"
+    "Ipopt/Ipopt/src/contrib/LinearSolverLoader/"
+    "Ipopt/Ipopt/src/contrib/Interfaces/"
+    "Ipopt/Ipopt/src/contrib/LinAlg/"
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h*")
+
+set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/ipopt")
+install(EXPORT ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")

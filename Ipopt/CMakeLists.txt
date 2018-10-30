@@ -127,5 +127,11 @@ if (NOT CMAKE_GNUtoMS)
   add_ipopt_test(hs071_f SOURCE_DIR ${COIN_BINARY_DIR} hs071_f.f)
 endif ()
 
+install(TARGETS ipoptfort
+  EXPORT ipopt-targets
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
 set(BUILD_SHARED_LIBS False)
 add_subdirectory(../ThirdParty/lapack lapack)
