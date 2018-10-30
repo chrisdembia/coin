@@ -9,6 +9,7 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 include(GNUInstallDirs)
+set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/coin")
 
 set(MP_DIR ThirdParty/mp)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MP_DIR}/CMakeLists.txt)
@@ -21,7 +22,7 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MP_DIR}/CMakeLists.txt)
   include_directories($<TARGET_PROPERTY:asl,INTERFACE_INCLUDE_DIRECTORIES>)
 endif ()
 
-project(COIN)
+project(Ipopt)
 
 # Replaces libraries in CMAKE_${lang}_IMPLICIT_LINK_LIBRARIES whose
 # names appear in ARGN with their static counterparts.
@@ -697,20 +698,16 @@ if (COIN_HAS_ASL)
 endif ()
 
 install(TARGETS ipopt
-  EXPORT ipopt-targets
+  EXPORT Ipopt-targets
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
 get_filename_component(IPOPT_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}"
     ABSOLUTE "${CMAKE_BINARY_DIR}")
-get_filename_component(IPOPT_INSTALL_INCLUDEDIR
-    "${CMAKE_INSTALL_INCLUDEDIR}/coin"
-    ABSOLUTE "${IPOPT_INSTALL_PREFIX}")
 target_include_directories(ipopt INTERFACE
-    $<BUILD_INTERFACE:${IPOPT_INSTALL_INCLUDEDIR}>)
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/coin")
 install(DIRECTORY
     "Ipopt/Ipopt/src/Algorithm/"
     "Ipopt/Ipopt/src/Common/"
@@ -721,5 +718,7 @@ install(DIRECTORY
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 
-set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/ipopt")
-install(EXPORT ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")
+set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/Ipopt")
+install(EXPORT Ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")
+
+add_subdirectory(cmake)
