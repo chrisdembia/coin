@@ -718,7 +718,7 @@ install(DIRECTORY
     "Ipopt/Ipopt/src/contrib/Interfaces/"
     "Ipopt/Ipopt/src/contrib/LinAlg/"
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h*")
+    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 
 set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/ipopt")
 install(EXPORT ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")
