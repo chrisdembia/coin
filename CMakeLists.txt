@@ -1,7 +1,7 @@
 # CMake build script for COIN-OR projects.
 # Author: Victor Zverovich
 
-cmake_minimum_required(VERSION 2.8.7.20120206)
+cmake_minimum_required(VERSION 3.1.3)
 cmake_policy(VERSION ${CMAKE_MINIMUM_REQUIRED_VERSION})
 
 if (BUILD_SHARED_LIBS)
@@ -715,8 +715,12 @@ install(DIRECTORY
     "Ipopt/Ipopt/src/contrib/LinearSolverLoader/"
     "Ipopt/Ipopt/src/Interfaces/"
     "Ipopt/Ipopt/src/LinAlg/"
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+    PATTERN "IpoptConfig.h" EXCLUDE)
+install(FILES "Ipopt/Ipopt/src/Common/config_ipopt.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    RENAME "IpoptConfig.h")
 
 set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/Ipopt")
 install(EXPORT Ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")
