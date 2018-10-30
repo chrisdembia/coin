@@ -62,7 +62,7 @@
  *     knowledge, there is no way to perform the conversion with CPP
  *     directives only.
  */
-#if defined(UPPER) || defined(MUMPS_WIN32)
+#if defined(UPPER) || ! defined(MUMPS_GNUC)
 # define F_SYMBOL(lower_case,upper_case) MUMPS_##upper_case
 #elif defined(Add_)
 # define F_SYMBOL(lower_case,upper_case) mumps_##lower_case##_
