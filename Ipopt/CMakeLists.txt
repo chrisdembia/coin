@@ -117,6 +117,16 @@ add_library(ipoptfort ${mumps_src} ${LinearSolverLoader_src}
 
 find_package(Threads)
 target_link_libraries(ipoptfort lapack blas ${CMAKE_THREAD_LIBS_INIT})
+if(USE_OPTIMIZED_BLAS)
+    target_link_libraries(ipoptfort ${BLAS_LIBRARIES})
+else()
+    target_link_libraries(ipoptfort blas)
+endif()
+if (USE_OPTIMIZED_LAPACK)
+    target_link_libraries(ipoptfort ${LAPACK_LIBRARIES})
+else()
+    target_link_libraries(ipoptfort lapack)
+endif()
 
 find_library(DL_LIBRARY dl)
 if (DL_LIBRARY)
