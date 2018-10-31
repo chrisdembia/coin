@@ -65,8 +65,6 @@ include_directories(
   ../ThirdParty/Mumps/MUMPS/src
   Ipopt/src/Interfaces)
 
-add_definitions(-DIPOPT_BUILD -DHAVE_CONFIG_H)
-
 # Prepend directory to each filename passed as varargs and assign the result to var.
 function (prepend_dir var dir)
   set(paths )
@@ -114,6 +112,10 @@ prepend_dir(mumps_src ../ThirdParty/Mumps/MUMPS
 
 add_library(ipoptfort ${mumps_src} ${LinearSolverLoader_src}
   Ipopt/src/Algorithm/LinearSolvers/IpMa28Partition.F)
+
+target_compile_definitions(ipoptfort
+    PRIVATE IPOPT_BUILD
+    PUBLIC HAVE_CONFIG_H)
 
 find_package(Threads)
 target_link_libraries(ipoptfort lapack blas ${CMAKE_THREAD_LIBS_INIT})

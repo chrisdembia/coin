@@ -140,7 +140,7 @@ endfunction()
 
 # Reads an automake file (Makefile.am).
 function(read_am_file filename var)
-  message("Parsing ${filename}")
+  message(STATUS "Parsing ${filename}")
   file(READ ${filename} text)
   string(REPLACE "\\\n" "" text "${text}")
   string(REGEX MATCHALL "[^\n]+" in_lines "${text}")
@@ -170,7 +170,7 @@ function(coin_get_sources path name var noinst_var)
         if (NOT EXISTS ${COIN_SOURCE_DIR}/${path}/${src})
           # do nothing
         elseif (src MATCHES "\\.[fF]$")
-          message("Skipped ${src}")
+            message(STATUS "Skipped ${src}")
         else ()
           set(sources ${sources} ${path}/${src})
         endif ()
@@ -499,14 +499,12 @@ endif ()
 
 enable_testing()
 
-add_definitions(-DHAVE_CONFIG_H)
-
 # Define FORTRAN_INTEGER_TYPE for Ipopt.
 set(FORTRAN_INTEGER_TYPE_C int)
 
 function(add_ipopt_library name path)
   add_coin_library(Ipopt/Ipopt/src/${path} NAME ${name} ${ARGN})
-  set_target_properties(${name} PROPERTIES COMPILE_DEFINITIONS IPOPT_BUILD)
+  target_compile_definitions(${name} PRIVATE IPOPT_BUILD PUBLIC HAVE_CONFIG_H)
 endfunction()
 
 function(add_ipopt_test name)
@@ -596,6 +594,7 @@ if (BUILD_IPOPT)
       CMAKE_COMMAND_LINE ${FORTRAN_CMAKE_FLAGS}
       NO_EXTERNAL_INSTALL)
     set(COIN_HAS_BLAS 1)
+    set(COIN_HAS_LAPACK 1)
     set(COIN_HAS_MUMPS 1)
     set(IPOPTFORT ipoptfort)
   endif ()
@@ -716,11 +715,10 @@ install(DIRECTORY
     "Ipopt/Ipopt/src/Interfaces/"
     "Ipopt/Ipopt/src/LinAlg/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
-    PATTERN "IpoptConfig.h" EXCLUDE)
-install(FILES "Ipopt/Ipopt/src/Common/config_ipopt.h"
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-    RENAME "IpoptConfig.h")
+    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+# TODO install(FILES "Ipopt/Ipopt/src/Common/config_ipopt.h"
+# TODO     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+# TODO     RENAME "IpoptConfig.h")
 
 set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/Ipopt")
 install(EXPORT Ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")
