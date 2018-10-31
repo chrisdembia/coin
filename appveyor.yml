@@ -1,0 +1,30 @@
+shallow_clone: true
+
+image: Visual Studio 2017
+
+platform: x64
+
+skip_branch_with_pr: true
+
+nuget:
+    disable_publish_on_pr: true
+
+# https://github.com/theochem/python-cython-ci-example/blob/master/.appveyor.yml
+build_script:
+    - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
+    - '"C:\Miniconda3-x64\Scripts\acivate.bat"'
+    - conda update -q conda
+    - conda install -y --channel conda-forge cmake clangdev flang openblas perl
+    - conda install -y --channel isuruf kitware-ninja
+    - '"C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"'
+    - set "LIB=C:/Miniconda3-x64/Library/lib;%LIB%"
+    - set "CPATH=C:/Miniconda3-x64/Library/include;%CPATH%"
+    - mkdir build
+    - cd build
+    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt"
+    - ninja install
+    # TODO copy flang.lib etc.
+    - 7z  a C:/ipopt.zip C:/ipopt
+
+artifacts:
+    - C:/ipopt.zip
