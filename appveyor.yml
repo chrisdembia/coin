@@ -24,7 +24,6 @@ build_script:
     - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt"
     - ninja install
     # TODO copy flang.lib etc.
-    - 7z  a C:/ipopt.zip C:/ipopt
 
 artifacts:
-    - C:/ipopt.zip
+    - path: C:/ipopt
