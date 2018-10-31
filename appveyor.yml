@@ -11,8 +11,9 @@ nuget:
 
 # https://github.com/theochem/python-cython-ci-example/blob/master/.appveyor.yml
 build_script:
+    - echo %VS140COMNTOOLS%
     - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
-    - '"C:\Miniconda3-x64\Scripts\acivate.bat"'
+    - '"C:\Miniconda3-x64\Scripts\activate.bat"'
     - conda update -q conda
     - conda install -y --channel conda-forge cmake clangdev flang openblas perl
     - conda install -y --channel isuruf kitware-ninja
