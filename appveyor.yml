@@ -19,7 +19,8 @@ build_script:
     - conda install -y --channel conda-forge cmake clangdev flang openblas perl
     - conda install -y --channel isuruf kitware-ninja
     - conda info -a
-    - '"C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"'
+    - link.exe
+      # - '"C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"'
     - set "LIB=C:/Miniconda3-x64/Library/lib;%LIB%"
     - set "CPATH=C:/Miniconda3-x64/Library/include;%CPATH%"
     - mkdir build
