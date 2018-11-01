@@ -524,7 +524,7 @@ function(add_ipopt_test name)
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${COIN_BINARY_DIR}/bin)
 endfunction()
 
-if (EXISTS ${COIN_SOURCE_DIR}/Ipopt)
+if (TRUE)
   set(BUILD_IPOPT TRUE)
   enable_language(Fortran)
   if (MSVC)
