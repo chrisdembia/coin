@@ -14,18 +14,21 @@ build_script:
     - echo %VS140COMNTOOLS%
     - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
     - '"C:\Miniconda3-x64\Scripts\activate.bat"'
+    - echo "DEBUG SDK"
+    - ver
+    - dir "C:\Program Files (x86)\Windows Kits\10\Include"
+    - ps: $(Get-Item "hklm:\SOFTWARE\Microsoft\Microsoft SDKs\Windows").GetValue("CurrentVersion")
     - conda config --set always_yes yes
     - conda update -q conda
     - conda install -y --channel conda-forge cmake clangdev flang openblas perl
     - conda install -y --channel isuruf kitware-ninja
     - conda info -a
-    - ps: $(Get-Item "hklm:\SOFTWARE\Microsoft\Microsoft SDKs\Windows").GetValue("CurrentVersion")
       # TODO requires Clang 6. - call "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"
     - set "LIB=C:/Miniconda3-x64/Library/lib;%LIB%"
     - set "CPATH=C:/Miniconda3-x64/Library/include;%CPATH%"
     - mkdir build
     - cd build
-    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt"
+    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt" -DCMAKE_SYSTEM_VERSION=10.0.14393
     - ninja install
     # TODO copy flang.lib etc.
 
