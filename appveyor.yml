@@ -1,6 +1,6 @@
 shallow_clone: true
 
-image: Visual Studio 2017
+image: Visual Studio 2015
 
 platform: x64
 
@@ -12,14 +12,14 @@ nuget:
 # https://github.com/theochem/python-cython-ci-example/blob/master/.appveyor.yml
 build_script:
     - echo %VS140COMNTOOLS%
-      # - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
+    - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
     - '"C:\Miniconda3-x64\Scripts\activate.bat"'
     - conda config --set always_yes yes
     - conda update -q conda
     - conda install -y --channel conda-forge cmake clangdev flang openblas perl
     - conda install -y --channel isuruf kitware-ninja
     - conda info -a
-    - call "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"
+      # TODO requires Clang 6. - call "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat"
     - set "LIB=C:/Miniconda3-x64/Library/lib;%LIB%"
     - set "CPATH=C:/Miniconda3-x64/Library/include;%CPATH%"
     - mkdir build
