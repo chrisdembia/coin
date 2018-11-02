@@ -13,6 +13,8 @@ nuget:
 build_script:
     # - echo %VS140COMNTOOLS%
       # - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
+    - appveyor DownloadFile https://aka.ms/vs/15/release/vs_community.exe
+    - vs_community.exe --passive --norestart --add Microsoft.VisualStudio.Component.VC.Tools.14.12
     - '"C:\Miniconda3-x64\Scripts\activate.bat"'
     - echo "DEBUG SDK"
     - ver
@@ -33,7 +35,9 @@ build_script:
     - echo "%CPATH%"
     - mkdir build
     - cd build
-    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt" -DCMAKE_SYSTEM_VERSION=10.0.10240 -DCMAKE_BUILD_TYPE=Release
+    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt" -DCMAKE_BUILD_TYPE=Release
+      # TODO install v14.12
+      # https://docs.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-community?view=vs-2017
     - ninja install
     # TODO copy flang.lib etc.
 
