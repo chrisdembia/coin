@@ -14,6 +14,7 @@ build_script:
     # - echo %VS140COMNTOOLS%
       # - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
     - appveyor DownloadFile https://aka.ms/vs/15/release/vs_community.exe
+    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - vs_community.exe --wait --quiet --norestart --add Microsoft.VisualStudio.Component.VC.Tools.14.12
     - '"C:\Miniconda3-x64\Scripts\activate.bat"'
     - echo "DEBUG SDK"
