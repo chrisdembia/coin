@@ -118,17 +118,21 @@ target_compile_definitions(ipoptfort
     PUBLIC HAVE_CONFIG_H)
 
 find_package(Threads)
-target_link_libraries(ipoptfort lapack blas ${CMAKE_THREAD_LIBS_INIT})
-if(USE_OPTIMIZED_BLAS)
-    target_link_libraries(ipoptfort ${BLAS_LIBRARIES})
-else()
-    target_link_libraries(ipoptfort blas)
-endif()
-if (USE_OPTIMIZED_LAPACK)
-    target_link_libraries(ipoptfort ${LAPACK_LIBRARIES})
-else()
-    target_link_libraries(ipoptfort lapack)
-endif()
+target_link_libraries(ipoptfort ${CMAKE_THREAD_LIBS_INIT})
+# TODO
+target_link_libraries(ipoptfort "C:/Users/chris/Miniconda3/envs/flanging/Library/lib/openblas.lib")
+message("DEBUG Ipopt BLAS ${BLAS_LIBRARIES} ${USE_OPTIMIZED_BLAS}")
+message("DEBUG Ipopt LAPACK ${LAPACK_LIBRARIES} ${USE_OPTIMIZED_LAPACK}")
+# if(BLAS_LIBRARIES)
+    # target_link_libraries(ipoptfort ${BLAS_LIBRARIES})
+# else()
+#    target_link_libraries(ipoptfort blas)
+# endif()
+# if (LAPACK_LIBRARIES)
+    # target_link_libraries(ipoptfort ${LAPACK_LIBRARIES})
+# else()
+#    target_link_libraries(ipoptfort lapack)
+# endif()
 
 find_library(DL_LIBRARY dl)
 if (DL_LIBRARY)
@@ -144,6 +148,3 @@ install(TARGETS ipoptfort
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-
-set(BUILD_SHARED_LIBS False)
-add_subdirectory(../ThirdParty/lapack lapack)

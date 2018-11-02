@@ -12,4 +12,3 @@ include("@PACKAGE_IPOPT_INSTALL_CMAKEDIR@/@CMAKE_PROJECT_NAME@-targets.cmake")
 list(APPEND @CMAKE_PROJECT_NAME@_LIBRARIES ipopt)
 
 check_required_components(@CMAKE_PROJECT_NAME@)
-

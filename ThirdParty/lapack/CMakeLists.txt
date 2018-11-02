@@ -119,6 +119,8 @@ if(BLAS_LIBRARIES)
 # User did not provide a BLAS Library but specified to search for one
 elseif( USE_OPTIMIZED_BLAS )
   find_package( BLAS )
+ 
+        
 endif (BLAS_LIBRARIES)
 
 # Neither user specified or optimized BLAS libraries can be used
@@ -149,7 +151,6 @@ option(USE_OPTIMIZED_LAPACK "Whether or not to use an optimized LAPACK library i
 if( USE_OPTIMIZED_LAPACK )
   find_package( LAPACK )
 endif (USE_OPTIMIZED_LAPACK)
-
 # Check the usage of the user provided or automatically found LAPACK libraries
 if(LAPACK_LIBRARIES)
   include(CheckFortranFunctionExists)
@@ -286,5 +287,7 @@ install(FILES
   DESTINATION lib/cmake/lapack-${LAPACK_VERSION}
   )
 
+
 install(EXPORT lapack-targets
-  DESTINATION lib/cmake/lapack-${LAPACK_VERSION})
+    DESTINATION lib/cmake/lapack-${LAPACK_VERSION})
+endif()

@@ -716,9 +716,6 @@ install(DIRECTORY
     "Ipopt/Ipopt/src/LinAlg/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
-# TODO install(FILES "Ipopt/Ipopt/src/Common/config_ipopt.h"
-# TODO     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-# TODO     RENAME "IpoptConfig.h")
 
 set(IPOPT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/Ipopt")
 install(EXPORT Ipopt-targets DESTINATION "${IPOPT_INSTALL_CMAKEDIR}")
