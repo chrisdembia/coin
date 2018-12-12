@@ -48,10 +48,10 @@ build_script:
     - copy "C:\Miniconda3-x64\Library\lib\ompstub.lib" C:\projects\coin\install\ipopt\lib
     - dir "C:\Miniconda3-x64\Library"
     - dir "C:\Miniconda3-x64\Library\bin"
-    - copy "C:\Miniconda3-x64\Library\bin\openblas.lib" C:\projects\coin\install\ipopt\bin
-    - copy "C:\Miniconda3-x64\Library\bin\flang.lib" C:\projects\coin\install\ipopt\bin
-    - copy "C:\Miniconda3-x64\Library\bin\flangrti.lib" C:\projects\coin\install\ipopt\bin
-    - copy "C:\Miniconda3-x64\Library\bin\libomp.lib" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\openblas.dll" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\flang.dll" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\flangrti.dll" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\libomp.dll" C:\projects\coin\install\ipopt\bin
 
 artifacts:
     - path: C:/projects/coin/install/ipopt
