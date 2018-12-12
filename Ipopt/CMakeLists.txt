@@ -119,6 +119,7 @@ target_compile_definitions(ipoptfort
 
 find_package(Threads)
 target_link_libraries(ipoptfort ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(ipoptfort "C:/Miniconda3-x64/Library/lib/openblas.lib")
 message("DEBUG Ipopt BLAS ${BLAS_LIBRARIES} ${USE_OPTIMIZED_BLAS}")
 message("DEBUG Ipopt LAPACK ${LAPACK_LIBRARIES} ${USE_OPTIMIZED_LAPACK}")
 # if(BLAS_LIBRARIES)
