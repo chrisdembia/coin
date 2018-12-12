@@ -40,19 +40,18 @@ build_script:
       # TODO install v14.12
       # https://docs.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-community?view=vs-2017
     - ninja install
-    # TODO copy flang.lib, openblas.lib, etc.
-    - copy "C:/Miniconda3-x64/Library/lib/openblas.lib" C:/projects/coin/install/ipopt/lib
-    - copy "C:/Miniconda3-x64/Library/lib/flang.lib" C:/projects/coin/install/ipopt/lib
-    - copy "C:/Miniconda3-x64/Library/lib/flangrti.lib" C:/projects/coin/install/ipopt/lib
-    - copy "C:/Miniconda3-x64/Library/lib/flangmain.lib" C:/projects/coin/install/ipopt/lib
-    - copy "C:/Miniconda3-x64/Library/lib/libomp.lib" C:/projects/coin/install/ipopt/lib
-    - copy "C:/Miniconda3-x64/Library/lib/ompstub.lib" C:/projects/coin/install/ipopt/lib
-    - dir "C:/Miniconda3-x64/Library"
-    - dir "C:/Miniconda3-x64/Library/bin"
-    - copy "C:/Miniconda3-x64/Library/bin/openblas.lib" C:/projects/coin/install/ipopt/bin
-    - copy "C:/Miniconda3-x64/Library/bin/flang.lib" C:/projects/coin/install/ipopt/bin
-    - copy "C:/Miniconda3-x64/Library/bin/flangrti.lib" C:/projects/coin/install/ipopt/bin
-    - copy "C:/Miniconda3-x64/Library/bin/libomp.lib" C:/projects/coin/install/ipopt/bin
+    - copy "C:\Miniconda3-x64\Library\lib\openblas.lib" C:\projects\coin\install\ipopt\lib
+    - copy "C:\Miniconda3-x64\Library\lib\flang.lib" C:\projects\coin\install\ipopt\lib
+    - copy "C:\Miniconda3-x64\Library\lib\flangrti.lib" C:\projects\coin\install\ipopt\lib
+    - copy "C:\Miniconda3-x64\Library\lib\flangmain.lib" C:\projects\coin\install\ipopt\lib
+    - copy "C:\Miniconda3-x64\Library\lib\libomp.lib" C:\projects\coin\install\ipopt\lib
+    - copy "C:\Miniconda3-x64\Library\lib\ompstub.lib" C:\projects\coin\install\ipopt\lib
+    - dir "C:\Miniconda3-x64\Library"
+    - dir "C:\Miniconda3-x64\Library\bin"
+    - copy "C:\Miniconda3-x64\Library\bin\openblas.lib" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\flang.lib" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\flangrti.lib" C:\projects\coin\install\ipopt\bin
+    - copy "C:\Miniconda3-x64\Library\bin\libomp.lib" C:\projects\coin\install\ipopt\bin
 
 artifacts:
     - path: C:/projects/coin/install/ipopt
