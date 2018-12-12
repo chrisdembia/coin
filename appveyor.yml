@@ -36,11 +36,11 @@ build_script:
     - echo "%CPATH%"
     - mkdir build
     - cd build
-    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt" -DCMAKE_BUILD_TYPE=Release
+    - cmake .. -G "Ninja" -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DCMAKE_Fortran_COMPILER=flang -DCMAKE_INSTALL_PREFIX="C:/ipopt" -DCMAKE_BUILD_TYPE=Release -DBLAS_LIBRARIES="C:/Miniconda3-x64/Library"
       # TODO install v14.12
       # https://docs.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-community?view=vs-2017
     - ninja install
-    # TODO copy flang.lib etc.
+    # TODO copy flang.lib, openblas.lib, etc.
 
 artifacts:
     - path: C:/ipopt
