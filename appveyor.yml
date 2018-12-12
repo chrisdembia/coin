@@ -52,6 +52,7 @@ build_script:
     - copy "C:\Miniconda3-x64\Library\bin\flang.dll" C:\projects\coin\install\ipopt\bin
     - copy "C:\Miniconda3-x64\Library\bin\flangrti.dll" C:\projects\coin\install\ipopt\bin
     - copy "C:\Miniconda3-x64\Library\bin\libomp.dll" C:\projects\coin\install\ipopt\bin
+    - cd %APPVEYOR_BUILD_FOLDER%
 
 artifacts:
-    - path: C:/projects/coin/install/ipopt
+    - path: install/ipopt
